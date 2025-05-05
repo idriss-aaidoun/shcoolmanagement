@@ -1,0 +1,33 @@
+modules = ["php"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["mariadb", "php"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "ENSA Projects Server"
+
+[[workflows.workflow]]
+name = "ENSA Projects Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "php -S 0.0.0.0:5000"
+waitForPort = 5000
+
+[deployment]
+run = ["sh", "-c", "apt-get update && apt-get install -y mariadb-server php-mysql && service mariadb start && mysql < sql/ensa_project_db.sql && php -S 0.0.0.0:5000"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80

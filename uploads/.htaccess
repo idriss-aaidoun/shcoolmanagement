@@ -1,0 +1,20 @@
+# Prevent directory listing
+Options -Indexes
+
+# Prevent direct access to files
+<FilesMatch ".*">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Allow access to specific file types through PHP script
+<FilesMatch "\.(?i:pdf|doc|docx|zip|rar|ppt|pptx|txt)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Prevent PHP execution in uploads directory
+<FilesMatch "\.(?i:php|php3|php4|php5|phtml)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
